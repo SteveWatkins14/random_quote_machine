@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DisplayQuote } from './DisplayQuote';
 import { DisplayButtons } from './DisplayButtons';
+import Container from 'react-bootstrap/Container';
 
 class App extends Component {
   constructor(props) {
@@ -47,12 +48,12 @@ class App extends Component {
 
   render() {
     return (
-      <div id="quote-box" className='App'>
-        <h1>Random Quote Generator</h1>
+      <Container id="quote-box" className='App'>
+        <h1 id="title">Random Quote Generator</h1>
         <DisplayQuote quote={this.state} />
         <DisplayButtons getNewQuote={this.getNewQuote}
                         tweetQuote={this.state.tweet}/>
-      </div>
+      </Container>
     );
   }
 }

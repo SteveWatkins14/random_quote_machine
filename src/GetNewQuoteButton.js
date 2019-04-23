@@ -1,9 +1,10 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 export const GetNewQuoteButton = (props) => {
   return (
-      <button id="new-quote"
+      <Button variant="success" id="new-quote"
               onClick={props.getNewQuote}>Random Quote
-      </button>
+      </Button>
   );
 }
