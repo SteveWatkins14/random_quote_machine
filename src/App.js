@@ -1,25 +1,57 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { DisplayQuote } from './DisplayQuote';
+import { DisplayButtons } from './DisplayButtons';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      quote: '',
+      author: '',
+      tweet: '',
+      isLoaded: false
+    }
+
+    this.getNewQuote = this.getNewQuote.bind(this);
+    this.createTweet = this.createTweet.bind(this);
+  }
+
+  getNewQuote() {
+    this.setState({
+      isLoaded: false
+    })
+    const END_POINT = 'https://thesimpsonsquoteapi.glitch.me/quotes';
+    fetch(END_POINT)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+          quote: json[0].quote,
+          author: json[0].character,
+          isLoaded: true,
+          tweet: this.createTweet(json[0])
+      })
+    });
+  }
+
+  createTweet(data) {
+    let convertedQuote = data.quote.split(' ').join('%20');
+    let convertedAuthor = data.character.split(' ').join('%20');
+    let tweet = "https://twitter.com/intent/tweet?hashtags=quote&text=%22" +
+    convertedQuote + "%22%20" + convertedAuthor;
+    return tweet;
+  }
+
+  componentWillMount() {
+    this.getNewQuote();
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div id="quote-box" className='App'>
+        <h1>Random Quote Generator</h1>
+        <DisplayQuote quote={this.state} />
+        <DisplayButtons getNewQuote={this.getNewQuote}
+                        tweetQuote={this.state.tweet}/>
       </div>
     );
   }
